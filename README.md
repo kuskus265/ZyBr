@@ -1,4 +1,5 @@
 # ZyBr
+# Work in progress and I just totally broke it...
 A simple zip bruteforce tool.
 
 
