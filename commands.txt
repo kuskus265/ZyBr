@@ -1,0 +1,5 @@
+zip -e -j ~/Repos/ZyBR/demo/demo.zip ~/Repos/ZyBR/demo/kočičky/*
+
+./crunch 3 3 -f ./charset.lst lalpha -o ~/Repos/ZyBR/demo/passwords.txt
+
+python3 AESBF.py -in ./demo/demo.zip -w ./demo/passwords.txt

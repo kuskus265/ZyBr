@@ -9,7 +9,7 @@ def main():    #definování argumentů
     parser.add_argument("-in", "--input", help="Location of ZIP file to crack", dest="input", type=str, required=True) #Input - Vstupní soubor, uživatel uvee jeho celou cestu
     parser.add_argument("-w", "--wordlist", help="use existing wordlist", dest="wordlist", type=str, required=False) #Jáký použijeme wordlist. Zatím je povinným  další verzi pokud uživatel nedefinuje wordlist, použijí se automaticky nejpoužávanější hesla
     parser.add_argument("-q", "--quiet", help="Quiet mode", dest="q", action='store_true') #Tichý režím - krapet rychlejší, ale uživatel nevidí jak daleko program je.
-    parser.add_argument("-m", "--nomulti", help="Enable multithreading", dest="m", action='store_true', default=False)
+    parser.add_argument("-m", "--multi", help="Enable multithreading", dest="m", action='store_true', default=False)
     parser.add_argument("-c", "--crunch", help="Generate Wordlist using crunch", dest="c", action='store_true')
     parser.set_defaults(func=create_processes)
     args = parser.parse_args()
@@ -35,9 +35,6 @@ class MultiSplit: #třída, která rozdělí wordlist na několik dílo a každ�
         return self.splitline
 
     def split(self):
-        """AKTUÁLNĚ NEFUNKČNÍ, BO SOM KOKOT tato funkce vezme délku z přechozí funnkce a začne rozdělovat soubor. Vygeneruje si soubory podle počtu jader(4 jádrový procesor = 4 soubory. 1.txt, 2.txt, atd.
-        otevře původní wordlist a začne kopírovat soubory do nových .txt souborů. když bychom měli wordlist o 8 klíčích a 4 jadrový procesor, funkce to rozdělí tak že budou 4 txt soubory se dvěma klíči
-        (8/2 že jo) a ta se později přiradí k procesoru tak, že první jádro zkouší 1.txt, 2 jádro zkouší 2.txt. dál to asi nechám být, není to složíté"""
         copy = False
         i = 1
         x = self.get_numbers(self.args)
@@ -80,9 +77,9 @@ class Process:
 
     def quit(self, result):
         if not result:
-            self.pool.terminate()
+            self.pool.terminate()   
         if result:
-            print("tralalalololo")
+            print(result)
 
     def run(self, args):
         if args.c:
@@ -108,11 +105,14 @@ class Process:
             bruteforce(self, args, 0)
 
 def bruteforce(self, args, n):
+    print(args.wordlist)
     in_zip = args.input
     if self.args.m:
         wl = sys.path[0] + ("/data/%d.txt" % n)
-    elif n == 0:
+    elif n == 0 and args.wordlist != None:
         wl = self.args.wordlist
+    else:
+        wl = sys.path[0] + ("/data/passwords.txt")
     print(pyzipper.AESZipFile(in_zip))
     found = False
     global password
